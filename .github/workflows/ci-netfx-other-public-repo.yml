@@ -46,8 +46,8 @@ jobs:
     - name: Nuget restore
       shell: pwsh
       run: |
-        cd ${{ env.MSBuildPath }}
-        .\NuGet.exe  restore ${{ github.workspace }}/Common.sln
+        cd ${{ github.workspace }}
+        .\.nuget\NuGet.exe  restore ${{ github.workspace }}/Common.sln
         
     - name: Build the solution
       shell: pwsh
