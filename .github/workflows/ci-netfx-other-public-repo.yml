@@ -18,7 +18,6 @@ jobs:
     
     - name: Install netfx-4.8
       run: choco install netfx-4.8
-
   
     - name: Get .NET FX versions
       shell: pwsh
@@ -28,6 +27,21 @@ jobs:
     - name: Get MSBuildToolsPath
       shell: pwsh
       run: Resolve-Path HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\* | Get-ItemProperty -Name MSBuildToolsPath
+    
+    - name: Get latest MSBuildPath
+      shell: pwsh
+      run: |
+        $MSBuildPath = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\' | 
+        Get-ItemProperty -Name MSBuildToolsPath | 
+        Sort-Object PSChildName -Descending | 
+        Select-Object -ExpandProperty MSBuildToolsPath -First 1
+        echo "MSBuildPath=$MSBuildPath" >> $GITHUB_ENV
+
+    - name: Build the solution
+      shell: pwsh
+      run: |
+        cd "$MSBuildPath"
+        .\MSBuild.exe /p:Configuration=Debug /detailedsummary Common.sln
         
     - name: Checkout the repo
       uses: actions/checkout@v4
