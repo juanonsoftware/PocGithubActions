@@ -52,3 +52,5 @@ jobs:
         cd ${{ env.MSBuildPath }}
         .\MSBuild.exe /p:Configuration=Debug /detailedsummary ${{ github.workspace }}/Common.sln
 
+    - name: Run .NET Code Analysis
+      uses: dotnet/code-analysis@v1
