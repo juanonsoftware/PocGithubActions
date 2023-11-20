@@ -15,6 +15,11 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
+    
+    - name: Install netfx-4.8
+      run: choco install netfx-4.8
+
+  
     - name: Display system info
       shell: pwsh
       run: |
@@ -23,9 +28,6 @@ jobs:
 
         Write-Host "PSVersionTable"
         $PSVersionTable
-
-    - name: Install netfx-4.8
-      run: choco install netfx-4.8
         
     - name: Checkout the repo
       uses: actions/checkout@v4
