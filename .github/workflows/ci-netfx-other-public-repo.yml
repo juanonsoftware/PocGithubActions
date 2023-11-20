@@ -20,14 +20,10 @@ jobs:
       run: choco install netfx-4.8
 
   
-    - name: Display system info
+    - name: Get .NET FX versions
       shell: pwsh
       run: |
-        Write-Host "System.Environment.Version"
-        [System.Environment]::Version
-
-        Write-Host "PSVersionTable"
-        $PSVersionTable
+        Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP' -Recurse | Get-ItemProperty -Name version -EA 0 | Where { $_.PSChildName -Match '^(?!S)\p{L}'} | Select PSChildName, Version
         
     - name: Checkout the repo
       uses: actions/checkout@v4
