@@ -32,9 +32,12 @@ jobs:
       shell: pwsh
       run: |
         $MSBuildPath = Get-ChildItem 'HKLM:\SOFTWARE\Microsoft\MSBuild\ToolsVersions\' | 
-        Get-ItemProperty -Name MSBuildToolsPath | 
-        Sort-Object PSChildName -Descending | 
-        Select-Object -ExpandProperty MSBuildToolsPath -First 1
+          Get-ItemProperty -Name MSBuildToolsPath | 
+          Sort-Object PSChildName -Descending | 
+          Select-Object -ExpandProperty MSBuildToolsPath -First 1
+        
+        $MSBuildPath
+        
         echo "MSBuildPath=$MSBuildPath" >> $GITHUB_ENV
 
     - name: Build the solution
