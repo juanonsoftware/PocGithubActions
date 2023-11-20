@@ -15,21 +15,16 @@ jobs:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
     steps:
+    - name: Display system info
+      shell: pwsh
+      run: |
+        Write-Host "System.Environment.Version"
+        [System.Environment]::Version
+
+        Write-Host "PSVersionTable"
+        $PSVersionTable
+        
     - name: Checkout the repo
       uses: actions/checkout@v4
       with: 
         repository: vndevpro/architecture-common
-        
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-        
-    - name: Restore dependencies
-      run: dotnet restore
-      
-    - name: Test
-      run: dotnet test -c Debug --verbosity normal --no-restore
-      
-    - name: Build the solution
-      run: dotnet build --no-restore -c Release
