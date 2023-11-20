@@ -37,14 +37,15 @@ jobs:
           Select-Object -ExpandProperty MSBuildToolsPath -First 1
         
         "MSBuildPath=" + $MSBuildPath >> $env:GITHUB_ENV
-
-    - name: Build the solution
-      shell: pwsh
-      run: |
-        cd ${{ env.MSBuildPath }}
-        .\MSBuild.exe /p:Configuration=Debug /detailedsummary Common.sln
         
     - name: Checkout the repo
       uses: actions/checkout@v4
       with: 
         repository: vndevpro/architecture-common
+    
+    - name: Build the solution
+      shell: pwsh
+      run: |
+        cd ${{ env.MSBuildPath }}
+        .\MSBuild.exe /p:Configuration=Debug /detailedsummary Common.sln
+
