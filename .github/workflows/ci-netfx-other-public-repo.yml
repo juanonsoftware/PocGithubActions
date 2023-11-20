@@ -1,0 +1,35 @@
+name: ci-netfx-other-public-repo
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
+
+    steps:
+    - name: Checkout the repo
+      uses: actions/checkout@v4
+      with: 
+        repository: vndevpro/architecture-common
+        
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 6.0.x
+        
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Test
+      run: dotnet test -c Debug --verbosity normal --no-restore
+      
+    - name: Build the solution
+      run: dotnet build --no-restore -c Release
