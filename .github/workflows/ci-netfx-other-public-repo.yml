@@ -23,6 +23,9 @@ jobs:
 
         Write-Host "PSVersionTable"
         $PSVersionTable
+
+    - name: Install netfx-4.8
+      run: choco install netfx-4.8
         
     - name: Checkout the repo
       uses: actions/checkout@v4
