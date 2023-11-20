@@ -36,7 +36,7 @@ jobs:
           Sort-Object PSChildName -Descending | 
           Select-Object -ExpandProperty MSBuildToolsPath -First 1
         
-        echo "MSBuildPath=" + $MSBuildPath >> $env:GITHUB_ENV
+        "MSBuildPath=" + $MSBuildPath >> $env:GITHUB_ENV
 
     - name: Build the solution
       shell: pwsh
