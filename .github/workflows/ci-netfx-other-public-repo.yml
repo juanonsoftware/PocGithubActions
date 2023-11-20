@@ -3,14 +3,14 @@ name: ci-netfx-other-public-repo
 on:
   workflow_dispatch:
   push:
-    branches: [ "main" ]
+    branches: [ "" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "" ]
 
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     env:
       NUGET_PACKAGES: ${{ github.workspace }}/.nuget/packages
 
