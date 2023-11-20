@@ -47,5 +47,5 @@ jobs:
       shell: pwsh
       run: |
         cd ${{ env.MSBuildPath }}
-        .\MSBuild.exe /p:Configuration=Debug /detailedsummary Common.sln
+        .\MSBuild.exe /p:Configuration=Debug /detailedsummary ${{ github.workspace }}/Common.sln
 
