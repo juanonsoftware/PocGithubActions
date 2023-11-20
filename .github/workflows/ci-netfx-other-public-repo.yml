@@ -42,7 +42,13 @@ jobs:
       uses: actions/checkout@v4
       with: 
         repository: vndevpro/architecture-common
-    
+
+    - name: Nuget restore
+      shell: pwsh
+      run: |
+        cd ${{ env.MSBuildPath }}
+        .\NuGet.exe  restore ${{ github.workspace }}/Common.sln
+        
     - name: Build the solution
       shell: pwsh
       run: |
