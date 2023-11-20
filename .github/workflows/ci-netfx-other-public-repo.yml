@@ -40,7 +40,7 @@ jobs:
     - name: Build the solution
       shell: pwsh
       run: |
-        cd "$MSBuildPath"
+        cd ${{ env.MSBuildPath }}
         .\MSBuild.exe /p:Configuration=Debug /detailedsummary Common.sln
         
     - name: Checkout the repo
