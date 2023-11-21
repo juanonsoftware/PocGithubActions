@@ -1,6 +1,6 @@
 # Build and publish a package to Github Packages
 
-name: ci-build-publish
+name: ci-net-publish-other-repo
 
 on:
   workflow_dispatch:
