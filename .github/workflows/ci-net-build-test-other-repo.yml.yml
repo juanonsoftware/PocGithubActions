@@ -1,0 +1,50 @@
+# Build and publish a package to Github Packages
+
+name: ci-net-build-test-other-repo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get build Info
+      id: info
+      run: |
+          echo "buildyear=$(date +'%Y')" >> $GITHUB_OUTPUT
+          echo "builddate=$(date +'%m%d%H%M')" >> $GITHUB_OUTPUT
+          echo "version=$(date +'%Y').$(date +'%m').$(date +'%d').$(date +'%H%M')" >> $GITHUB_OUTPUT
+    
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+        repository: juanonsoftware/BigNumber
+ 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+ 
+    - name: Restore dependencies
+      run: dotnet restore
+  
+    - name: Build in Debug configuration
+      run: dotnet build --no-restore -c Debug   
+      
+    - name: Run test
+      run: dotnet test --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
+
+    - name: Upload test file
+      uses: actions/upload-artifact@v3
+      with:
+        name: TestResults-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}
+        path: ${{ github.workspace }}/**/**/TestResult-*.html
+        
+    - name: Setup reportgenerator-globaltool
+      run: dotnet tool install -g dotnet-reportgenerator-globaltool
+
+    - name: Generate reports
+      run: reportgenerator reports:"${{ githu.workspace }}/**/TestResults/{guid}/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
