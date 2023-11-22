@@ -38,7 +38,7 @@ jobs:
       run: dotnet test --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
 
     - name: Run collect
-      run: dotnet test --collect:"XPlat Code Coverage"
+      run: dotnet test --collect:"XPlat Code Coverage" --results-directory:.
 
     - name: Upload test file
       uses: actions/upload-artifact@v3
@@ -50,4 +50,4 @@ jobs:
       run: dotnet tool install -g dotnet-reportgenerator-globaltool
 
     - name: Generate reports
-      run: reportgenerator reports:"${{ github.workspace }}/BigNumberTests/TestResults/*/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
+      run: reportgenerator reports:"${{ github.workspace }}/*/coverage.cobertura.xml" -targetdir:"coveragereport" -reporttypes:Html
