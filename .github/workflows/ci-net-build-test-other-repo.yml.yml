@@ -37,6 +37,9 @@ jobs:
     - name: Run test
       run: dotnet test --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
 
+    - name: Run collect
+      run: dotnet test --collect:"XPlat Code Coverage"
+
     - name: Upload test file
       uses: actions/upload-artifact@v3
       with:
