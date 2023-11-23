@@ -39,14 +39,14 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore PocGithubActionsDotNet
   
-    - name: Build in Debug configuration
-      run: dotnet build PocGithubActionsDotNet --no-restore -c Debug   
+    - name: Build
+      run: dotnet build PocGithubActionsDotNet --no-restore -c Release   
       
-    - name: Run test
-      run: dotnet test PocGithubActionsDotNet --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
+    - name: Test
+      run: dotnet test PocGithubActionsDotNet -c Release --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
 
     - name: Publish SampleWebApplication
-      run: dotnet publish -c Release --no-build ${{ github.workspace }}/PocGithubActionsDotNet/SampleWebApplication/SampleWebApplication.csproj -o ${{ github.workspace }}/PublishedSampleWebApplication
+      run: dotnet publish ${{ github.workspace }}/PocGithubActionsDotNet/SampleWebApplication/SampleWebApplication.csproj -c Release --no-build -o ${{ github.workspace }}/PublishedSampleWebApplication
 
     - name: Create SampleWebApplication Zip package 🐙
       uses: OctopusDeploy/create-zip-package-action@v3
