@@ -43,7 +43,7 @@ jobs:
       run: dotnet build --no-restore -c Debug   
       
     - name: Run test
-      run: dotnet test PocGithubActionsDotNet --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
+      run: dotnet test ${{ github.workspace }}/PocGithubActionsDotNet --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
 
     - name: Publish SampleWebApplication
       run: dotnet publish -c Release --no-build ${{ github.workspace }}/PocGithubActionsDotNet/SampleWebApplication/SampleWebApplication.csproj -o ${{ github.workspace }}/PublishedSampleWebApplication
