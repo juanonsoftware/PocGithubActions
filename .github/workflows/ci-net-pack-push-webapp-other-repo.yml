@@ -1,0 +1,64 @@
+# Build and publish a package to Github Packages
+
+name: ci-net-pack-push-webapp-other-repo
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_NUGET_URL: https://nuget.pkg.github.com/${{ GITHUB.REPOSITORY_OWNER }}/index.json      
+
+    steps:
+    - name: Get build Info
+      id: info
+      run: |
+          echo "buildyear=$(date +'%Y')" >> $GITHUB_OUTPUT
+          echo "builddate=$(date +'%m%d%H%M')" >> $GITHUB_OUTPUT
+          echo "version=$(date +'%Y').$(date +'%m').$(date +'%d').$(date +'%H%M')" >> $GITHUB_OUTPUT
+    
+    - name: Checkout source
+      uses: actions/checkout@v4
+      with:
+        path: PocGithubActions
+
+    - name: Checkout source PocGithubActionsDotNet
+      uses: actions/checkout@v4
+      with:
+        repository: juanonsoftware/PocGithubActionsDotNet
+ 
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: 7.0.x
+ 
+    - name: Restore dependencies
+      run: dotnet restore
+  
+    - name: Build in Debug configuration
+      run: dotnet build --no-restore -c Debug   
+      
+    - name: Run test
+      run: dotnet test --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
+
+    - name: Publish SampleWebApplication
+      run: dotnet publish -c Release --no-build ${{ github.workspace }}/SampleWebApplication/SampleWebApplication.csproj -o ${{ github.workspace }}/PublishedSampleWebApplication
+
+    - name: Create SampleWebApplication Zip package 🐙
+      uses: OctopusDeploy/create-zip-package-action@v3
+      with:
+        package_id: 'SampleWebApplication'
+        version: '1.0.${{ steps.info.outputs.buildyear }}.${{ steps.info.outputs.builddate }}'
+        output_folder: '${{ github.workspace }}/Packaging'
+        base_path: ${{ github.workspace }}/PublishedSampleWebApplication
+        files: |
+          **/*.*
+
+
+   # - name: Push packages
+   #   run: dotnet nuget push ${{ github.workspace }}/*.nupkg --source ${{ env.GITHUB_NUGET_URL }}  --api-key ${{ secrets.PAT_PUSH_PACKAGES }}
+
+  
