@@ -29,6 +29,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: juanonsoftware/PocGithubActionsDotNet
+        path: PocGithubActionsDotNet
  
     - name: Setup .NET
       uses: actions/setup-dotnet@v3
@@ -42,10 +43,10 @@ jobs:
       run: dotnet build --no-restore -c Debug   
       
     - name: Run test
-      run: dotnet test --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
+      run: dotnet test PocGithubActionsDotNet --no-build --verbosity normal --logger "html;logfilename=TestResult-${{ steps.info.outputs.buildyear }}-${{ steps.info.outputs.builddate }}.html"
 
     - name: Publish SampleWebApplication
-      run: dotnet publish -c Release --no-build ${{ github.workspace }}/SampleWebApplication/SampleWebApplication.csproj -o ${{ github.workspace }}/PublishedSampleWebApplication
+      run: dotnet publish -c Release --no-build ${{ github.workspace }}/PocGithubActionsDotNet/SampleWebApplication/SampleWebApplication.csproj -o ${{ github.workspace }}/PublishedSampleWebApplication
 
     - name: Create SampleWebApplication Zip package 🐙
       uses: OctopusDeploy/create-zip-package-action@v3
