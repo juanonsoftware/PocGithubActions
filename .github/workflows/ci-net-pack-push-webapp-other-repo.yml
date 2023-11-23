@@ -62,9 +62,9 @@ jobs:
       run: cp ${{ github.workspace }}/PocGithubActions/NuSpecs/SampleWebApplication.nuspec ${{ github.workspace }}/Packaging
 
     - name: Build nuget package
-      run: nuget pack ${{ github.workspace }}/Packaging/SampleWebApplication.nuspec -OutputDirectory ${{ github.workspace }}/Packaging
+      run: nuget pack ${{ github.workspace }}/Packaging/SampleWebApplication.nuspec -OutputDirectory ${{ github.workspace }}/Packaging -Version 1.0.${{ steps.info.outputs.buildyear }}.${{ steps.info.outputs.builddate }}
 
-   # - name: Push packages
-   #   run: dotnet nuget push ${{ github.workspace }}/*.nupkg --source ${{ env.GITHUB_NUGET_URL }}  --api-key ${{ secrets.PAT_PUSH_PACKAGES }}
+    - name: Push packages
+      run: dotnet nuget push ${{ github.workspace }}/Packaging/*.nupkg --source ${{ env.GITHUB_NUGET_URL }}  --api-key ${{ secrets.PAT_PUSH_PACKAGES }}
 
   
