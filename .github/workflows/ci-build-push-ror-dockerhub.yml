@@ -40,4 +40,4 @@ jobs:
           context: .
           file: ./Dockerfile.RoR
           push: true
-          tags: ${{ secrets.DOCKERHUB_REPO }}, ${{ secrets.DOCKERHUB_REPO }}:${{ env.buildyear }}-${{ env.builddate }}
+          tags: ${{ secrets.DOCKERHUB_REPO }}, ${{ secrets.DOCKERHUB_REPO_ROR }}:${{ env.buildyear }}-${{ env.builddate }}
