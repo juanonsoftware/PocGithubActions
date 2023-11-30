@@ -35,10 +35,19 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push
+      - name: Build and push to DockerHub (Debian)
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile.RoR
           push: true
           tags: ${{ vars.DOCKERHUB_REPO_ROR }}, ${{ vars.DOCKERHUB_REPO_ROR }}:${{ env.buildyear }}-${{ env.builddate }}
+
+      - name: Build and push to DockerHub (Alpine)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.RoR-Alpine
+          push: true
+          tags: ${{ vars.DOCKERHUB_REPO_ROR }}:latest-alpine, ${{ vars.DOCKERHUB_REPO_ROR }}:alpine-${{ env.buildyear }}-${{ env.builddate }}
+
